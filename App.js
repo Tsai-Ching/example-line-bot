@@ -34,15 +34,22 @@ app.post('/callback', line.middleware(config), (req, res) => {
 });
 
 // event handler
-function handleEvent(event) {
+async function handleEvent(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
     // ignore non-text-message event
     return Promise.resolve(null);
   }
 
+  const completion = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: event.message.text ,
+    max_tokens: 200,
+  });
+
   // create a echoing text message
-  const echo = { type: 'text', text: event.message.text };
+  const echo = { type: 'text', text: completion.data.choices[0].text };
 
   // use reply API
   return client.replyMessage(event.replyToken, echo);
 }
+
