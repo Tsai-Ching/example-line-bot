@@ -1,4 +1,5 @@
 require('dotenv').config();
+import config from '../config/index.js';
 
 const express = require('express');
 const line = require('@line/bot-sdk');
@@ -29,7 +30,7 @@ app.get('/', (req, res) => {
 
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
-app.post('/', line.middleware(config), (req, res) => {
+app.post(config.APP_WEBHOOK_PATH, line.middleware(config), (req, res) => {
   Promise
     .all(req.body.events.map(handleEvent))
     .then((result) => res.json(result))
