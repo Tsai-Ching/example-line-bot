@@ -1,5 +1,4 @@
 require('dotenv').config();
-import config from '../config/index.js';
 
 const express = require('express');
 const line = require('@line/bot-sdk');
