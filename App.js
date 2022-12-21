@@ -23,13 +23,9 @@ const client = new line.Client(config);
 // about Express itself: https://expressjs.com/
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send('geeting prompt');
-})
-
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
-app.post(config.APP_WEBHOOK_PATH, line.middleware(config), (req, res) => {
+app.post('/', line.middleware(config), (req, res) => {
   Promise
     .all(req.body.events.map(handleEvent))
     .then((result) => res.json(result))
